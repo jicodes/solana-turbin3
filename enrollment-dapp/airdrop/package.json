@@ -7,11 +7,14 @@
     "keygen": "ts-node ./keygen.ts",
     "airdrop": "ts-node ./airdrop.ts",
     "transfer": "ts-node ./transfer.ts",
-    "enroll": "ts-node ./enroll.ts"
+    "enroll": "ts-node ./enroll.ts",
+    "convert": "ts-node ./wallet-convert.ts"
   },
   "dependencies": {
     "@solana/web3.js": "^1.75.0",
     "@types/node": "^18.15.11",
+    "bs58": "^6.0.0",
+    "readline": "^1.3.0",
     "typescript": "^5.0.4"
   },
   "devDependencies": {
