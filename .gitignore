@@ -1,0 +1,15 @@
+# Target directories
+**/target/
+
+# Rust specific
+**/*.rs.bk
+Cargo.lock
+*.pdb
+
+# Wallet files
+**/*wallet.json
+
+# IDE and OS
+.DS_Store
+.idea/
+.vscode/
