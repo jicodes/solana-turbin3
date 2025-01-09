@@ -2,11 +2,15 @@
 mod tests {
     use solana_sdk::{
         pubkey::Pubkey,
-        signature::{Keypair, Signer},
+        signature::{read_keypair_file, Keypair, Signer},
     };
 
     use bs58;
     use std::io::{self, BufRead};
+
+    use solana_client::rpc_client::RpcClient;
+
+    const RPC_URL: &str = "https://api.devnet.solana.com";
 
     #[test]
     fn keygen() {
@@ -49,7 +53,23 @@ mod tests {
     }
 
     #[test]
-    fn airdop() {}
+    fn airdop() {
+        // Import our keypair
+        let keypair = read_keypair_file("dev-wallet.json").expect("Couldn't find wallet file");
+
+        // Connected to Solana Devnet RPC Client
+        let client = RpcClient::new(RPC_URL);
+
+        // We're going to claim 2 devnet SOL tokens (2 billion lamports)
+        match client.request_airdrop(&keypair.pubkey(), 2_000_000_000u64) {
+            Ok(sig) => {
+                println!("Success! Check out your TX here:");
+                println!("https://explorer.solana.com/tx/{}?cluster=devnet", sig);
+            }
+            Err(e) => println!("Oops, something went wrong: {}", e),
+        };
+    }
+    
     #[test]
     fn transfer_sol() {}
 }
