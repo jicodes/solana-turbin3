@@ -1,13 +1,15 @@
+mod programs;
+
 #[cfg(test)]
 mod tests {
     use solana_sdk::{
         message::Message,
         pubkey::Pubkey,
         signature::{read_keypair_file, Keypair, Signer},
+        system_program,
         transaction::Transaction,
     };
 
-    use bs58;
     use std::io::{self, BufRead};
 
     use solana_client::rpc_client::RpcClient;
@@ -15,6 +17,8 @@ mod tests {
     use solana_program::system_instruction::transfer;
 
     use std::str::FromStr;
+
+    use crate::programs::turbin3_prereq::{CompleteArgs, Turbin3PrereqProgram};
 
     const RPC_URL: &str = "https://api.devnet.solana.com";
 
@@ -162,6 +166,51 @@ mod tests {
         // Print our transaction out
         println!(
             "Success! Check out your TX here: https://explorer.solana.com/tx/{}/?cluster=devnet",
+            signature
+        );
+    }
+
+    #[test]
+    fn enroll() {
+        // Create a Solana devnet connection
+        let rpc_client = RpcClient::new(RPC_URL);
+        // Import the Turbin3 keypair as singer
+        let signer = read_keypair_file("turbin3-wallet.json").expect("Couldn't find wallet file");
+
+        // Create PDA for "prereq" account
+        let prereq = Turbin3PrereqProgram::derive_program_address(&[
+            b"prereq",
+            signer.pubkey().to_bytes().as_ref(),
+        ]);
+
+        // Define our instruction data
+        let args = CompleteArgs {
+            github: b"jicodes".to_vec(),
+        };
+
+        // Get recent blockhash
+        let blockhash = rpc_client
+            .get_latest_blockhash()
+            .expect("Failed to get recent blockhash");
+
+        // Now we can invoke the "complete" function
+        let transaction = Turbin3PrereqProgram::complete(
+            &[&signer.pubkey(), &prereq, &system_program::id()],
+            &args,
+            Some(&signer.pubkey()),
+            &[&signer],
+            blockhash,
+        );
+
+        // Send the transaction
+        let signature = rpc_client
+            .send_and_confirm_transaction(&transaction)
+            .expect("Failed to send transaction");
+
+        // Print our transaction out
+        println!(
+            "Success! Check out your TX here:
+https://explorer.solana.com/tx/{}/?cluster=devnet",
             signature
         );
     }
