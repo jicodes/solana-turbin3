@@ -1,14 +1,24 @@
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
-}
-
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use solana_sdk::{
+        pubkey::Pubkey,
+        signature::{Keypair, Signer},
+    };
 
     #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+    fn keygen() {
+        // Create a new keypair
+        let kp = Keypair::new();
+        println!(
+            "You've generated a new Solana wallet: {}",
+            kp.pubkey()
+        );
+        println!();
+        println!("To save your wallet, copy and paste the following into a JSON file:");
+        println!("{:?}", kp.to_bytes());
     }
+    #[test]
+    fn airdop() {}
+    #[test]
+    fn transfer_sol() {}
 }
