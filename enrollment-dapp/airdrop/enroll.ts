@@ -2,7 +2,6 @@ import { Connection, Keypair, PublicKey } from "@solana/web3.js";
 import { Program, Wallet, AnchorProvider } from "@coral-xyz/anchor";
 import { IDL, Turbin3Prereq } from "./programs/Turbin3_prereq";
 import wallet from "./Turbin3-wallet.json";
-import { SystemProgram } from "@solana/web3.js";
 
 // We're going to import our keypair from the wallet file
 const keypair = Keypair.fromSecretKey(new Uint8Array(wallet));
@@ -18,25 +17,25 @@ const provider = new AnchorProvider(connection, new Wallet(keypair), {
 });
 
 // Create our program
-const program: Program<Turbin3Prereq> = new Program(IDL, provider);
+const program = new Program(IDL as Turbin3Prereq, provider);
 
 // Create the PDA for our enrollment account
-const enrollment_seeds = [Buffer.from("prereq"), keypair.publicKey.toBuffer()];
+// const enrollment_seeds = [Buffer.from("pre"), keypair.publicKey.toBuffer()];
 
-const [enrollment_key, _bump] = PublicKey.findProgramAddressSync(
-  enrollment_seeds,
-  program.programId,
-);
+// const [enrollment_key, _bump] = PublicKey.findProgramAddressSync(
+//   enrollment_seeds,
+//   program.programId,
+// );
+
+// update: PDA generated from anchor program: Trb3aEx85DW1cEEvoqEaBkMn1tfmNEEEPaKzLSu4YAv
 
 // Execute our enrollment transaction
 (async () => {
   try {
     const txhash = await program.methods
-      .complete(github)
+      .submit(github)
       .accounts({
         signer: keypair.publicKey,
-        prereq: enrollment_key,
-        systemProgram: SystemProgram.programId,
       })
       .signers([keypair])
       .rpc();
