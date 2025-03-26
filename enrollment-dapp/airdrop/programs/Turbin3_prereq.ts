@@ -58,17 +58,33 @@ export type Turbin3Prereq = Idl & {
 
 // 3. IDL Object
 export const IDL: Turbin3Prereq = {
-  address: "WBAQSygkwMox2VuWKU133NxFrpDZUBdvSBeaBEue2Jq",
+  address: "Trb3aEx85DW1cEEvoqEaBkMn1tfmNEEEPaKzLSu4YAv",
   metadata: {
-    name: "wba_prereq",
+    name: "turbine_prereq",
     version: "0.1.0",
     spec: "0.1.0",
     description: "Created with Anchor",
   },
   instructions: [
     {
-      name: "complete",
-      discriminator: [0, 77, 224, 147, 136, 25, 88, 76],
+      name: "clean",
+      discriminator: [250, 191, 56, 128, 150, 251, 1, 103],
+      accounts: [
+        {
+          name: "signer",
+          writable: true,
+          signer: true,
+        },
+        {
+          name: "prereq",
+          writable: true,
+        },
+      ],
+      args: [],
+    },
+    {
+      name: "submit",
+      discriminator: [88, 166, 102, 181, 162, 127, 170, 48],
       accounts: [
         {
           name: "signer",
@@ -82,7 +98,7 @@ export const IDL: Turbin3Prereq = {
             seeds: [
               {
                 kind: "const",
-                value: [112, 114, 101, 114, 101, 113],
+                value: [112, 114, 101, 81, 50, 50, 53],
               },
               {
                 kind: "account",
@@ -98,7 +114,7 @@ export const IDL: Turbin3Prereq = {
       ],
       args: [
         {
-          name: "github",
+          name: "github_username",
           type: "bytes",
         },
       ],
@@ -134,6 +150,10 @@ export const IDL: Turbin3Prereq = {
       name: "Q2Prereq2024",
       discriminator: [210, 203, 168, 103, 251, 233, 204, 6],
     },
+    {
+      name: "Q2Prereq2025",
+      discriminator: [1, 231, 212, 91, 204, 178, 112, 25],
+    },
   ],
   errors: [
     {
@@ -145,6 +165,22 @@ export const IDL: Turbin3Prereq = {
   types: [
     {
       name: "Q2Prereq2024",
+      type: {
+        kind: "struct",
+        fields: [
+          {
+            name: "github",
+            type: "bytes",
+          },
+          {
+            name: "key",
+            type: "pubkey",
+          },
+        ],
+      },
+    },
+    {
+      name: "Q2Prereq2025",
       type: {
         kind: "struct",
         fields: [
