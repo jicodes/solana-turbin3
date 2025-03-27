@@ -4,7 +4,6 @@ mod programs;
 mod tests {
     use solana_sdk::{
         message::Message,
-        pubkey::Pubkey,
         signature::{read_keypair_file, Keypair, Signer},
         system_program,
         transaction::Transaction,
@@ -14,7 +13,7 @@ mod tests {
 
     use solana_client::rpc_client::RpcClient;
 
-    use solana_program::system_instruction::transfer;
+    use solana_program::{pubkey::Pubkey, system_instruction::transfer};
 
     use std::str::FromStr;
 
@@ -63,7 +62,7 @@ mod tests {
     }
 
     #[test]
-    fn airdop() {
+    fn airdrop() {
         // Import our keypair
         let keypair = read_keypair_file("dev-wallet.json").expect("Couldn't find wallet file");
 
@@ -84,6 +83,17 @@ mod tests {
     fn transfer_sol() {
         // Import our keypair
         let keypair = read_keypair_file("dev-wallet.json").expect("Couldn't find wallet file");
+
+        // With the imported Keypair, we can sign a new message.
+        let pubkey = keypair.pubkey();
+        let message_bytes = b"I verify my solana Keypair!";
+        let sig = keypair.sign_message(message_bytes);
+        // After that we can verify the singature, using the default implementation
+        match sig.verify(&pubkey.to_bytes(), message_bytes) {
+            true => println!("Signature verified"),
+            false => println!("Verification failed"),
+        }
+
         // Define our Turbin3 public key
         let to_pubkey = Pubkey::from_str("<your Turbin3 public key>").unwrap();
 
@@ -92,6 +102,7 @@ mod tests {
 
         // In order to sign transactions, we're going to need to get a recent blockhash,
         // as signatures are designed to expire as a security feature:
+
         // Get recent blockhash
         let recent_blockhash = rpc_client
             .get_latest_blockhash()
@@ -99,7 +110,7 @@ mod tests {
 
         // Create a new transaction
         let transaction = Transaction::new_signed_with_payer(
-            &[transfer(&keypair.pubkey(), &to_pubkey, 1_000_000)],
+            &[transfer(&keypair.pubkey(), &to_pubkey, 100_000_000)],
             Some(&keypair.pubkey()),
             &vec![&keypair],
             recent_blockhash,
