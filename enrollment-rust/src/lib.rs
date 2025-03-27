@@ -17,7 +17,7 @@ mod tests {
 
     use std::str::FromStr;
 
-    use crate::programs::turbin3_prereq::{CompleteArgs, Turbin3PrereqProgram};
+    use crate::programs::Turbin3_prereq::{CompleteArgs, Turbin3PrereqProgram};
 
     const RPC_URL: &str = "https://api.devnet.solana.com";
 
@@ -96,7 +96,8 @@ mod tests {
 
         // Define our Turbin3 public key
         // let to_pubkey = Pubkey::from_str("<your Turbin3 public key>").unwrap();
-        let to_keypair = read_keypair_file("turbin3-wallet.json").expect("Couldn't find wallet file");
+        let to_keypair =
+            read_keypair_file("turbin3-wallet.json").expect("Couldn't find wallet file");
         let to_pubkey = to_keypair.pubkey();
 
         // Create a Solana devnet connection
@@ -145,7 +146,8 @@ mod tests {
 
         // Define our Turbin3 public key
         // let to_pubkey = Pubkey::from_str("<your Turbin3 public key>").unwrap();
-        let to_keypair = read_keypair_file("turbin3-wallet.json").expect("Couldn't find wallet file");
+        let to_keypair =
+            read_keypair_file("turbin3-wallet.json").expect("Couldn't find wallet file");
         let to_pubkey = to_keypair.pubkey();
 
         // Get recent blockhash
