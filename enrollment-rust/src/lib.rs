@@ -95,7 +95,9 @@ mod tests {
         }
 
         // Define our Turbin3 public key
-        let to_pubkey = Pubkey::from_str("<your Turbin3 public key>").unwrap();
+        // let to_pubkey = Pubkey::from_str("<your Turbin3 public key>").unwrap();
+        let to_keypair = read_keypair_file("turbin3-wallet.json").expect("Couldn't find wallet file");
+        let to_pubkey = to_keypair.pubkey();
 
         // Create a Solana devnet connection
         let rpc_client = RpcClient::new(RPC_URL);
@@ -142,7 +144,9 @@ mod tests {
             .expect("Failed to get balance");
 
         // Define our Turbin3 public key
-        let to_pubkey = Pubkey::from_str("<your Turbin3 public key>").unwrap();
+        // let to_pubkey = Pubkey::from_str("<your Turbin3 public key>").unwrap();
+        let to_keypair = read_keypair_file("turbin3-wallet.json").expect("Couldn't find wallet file");
+        let to_pubkey = to_keypair.pubkey();
 
         // Get recent blockhash
         let recent_blockhash = rpc_client
