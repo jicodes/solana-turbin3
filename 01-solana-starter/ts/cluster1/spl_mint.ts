@@ -1,6 +1,6 @@
 import { Keypair, PublicKey, Connection, Commitment } from "@solana/web3.js";
 import { getOrCreateAssociatedTokenAccount, mintTo } from '@solana/spl-token';
-import wallet from "../wba-wallet.json"
+import wallet from "../dev-wallet.json"
 import { publicKey } from '@metaplex-foundation/umi';
 
 // Import our keypair from the wallet file
