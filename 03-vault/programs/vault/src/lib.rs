@@ -22,8 +22,8 @@ pub mod my_program {
         Ok(())
     }
 
-    pub fn close_account(ctx: Context<CloseAccount>) -> Result<()> {
-        ctx.accounts.close_account()?;
+    pub fn close(ctx: Context<Close>) -> Result<()> {
+        ctx.accounts.close()?;
         Ok(())
     }
 }
@@ -68,7 +68,7 @@ pub struct Payment<'info> {
 }
 
 #[derive(Accounts)]
-pub struct CloseAccount<'info> {
+pub struct Close<'info> {
     #[account(mut)]
     pub signer: Signer<'info>,
     #[account(
@@ -136,8 +136,8 @@ impl<'info> Payment<'info> {
     }
 }
 
-impl<'info> CloseAccount<'info> {
-    pub fn close_account(&mut self) -> Result<()> {
+impl<'info> Close<'info> {
+    pub fn close(&mut self) -> Result<()> {
         // Transfer remaining lamports from vault to signer
         let signer_key = self.signer.to_account_info().key();
         let vault_seeds = &[
