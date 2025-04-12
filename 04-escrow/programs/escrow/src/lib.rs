@@ -26,6 +26,3 @@ pub mod escrow {
         ctx.accounts.refund_and_close_vault()
     }
 }
-
-#[derive(Accounts)]
-pub struct Initialize {}
