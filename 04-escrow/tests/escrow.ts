@@ -150,7 +150,7 @@ describe("escrow", () => {
     await provider.sendAndConfirm(tx, [mintA, mintB, maker, taker]).then(log);
   });
 
-  it("Make", async () => {
+  it("Create escrow", async () => {
     await program.methods
       .make(seed, new BN(1e6), new BN(1e6))
       .accounts({ ...accounts })
@@ -170,7 +170,17 @@ describe("escrow", () => {
       .then(log);
   });
 
-  it("Take", async () => {
+  it("Create a new escrow", async () => {
+    await program.methods
+      .make(seed, new BN(1e6), new BN(1e6))
+      .accounts({ ...accounts })
+      .signers([maker])
+      .rpc()
+      .then(confirm)
+      .then(log);
+  });
+
+  it("Take the offer", async () => {
     try {
       await program.methods
         .take()
