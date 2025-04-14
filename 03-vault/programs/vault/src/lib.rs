@@ -41,9 +41,6 @@ pub struct Initialize<'info> {
     )]
     pub vault_state: Account<'info, VaultState>,
     #[account(
-        init,
-        payer = signer,
-        space = 0,
         seeds = [b"vault", vault_state.key().as_ref()],
         bump
     )]
