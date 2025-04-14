@@ -21,7 +21,7 @@ describe("vault", () => {
     program.programId
   );
   const [vaultPda] = PublicKey.findProgramAddressSync(
-    [Buffer.from("vault"), signer.publicKey.toBuffer()],
+    [Buffer.from("vault"), vaultStatePda.toBuffer()],
     program.programId
   );
 
