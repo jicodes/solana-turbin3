@@ -41,7 +41,10 @@ pub struct Initialize<'info> {
     )]
     pub vault_state: Account<'info, VaultState>,
     #[account(
-        seeds = [b"vault", signer.key().as_ref()],
+        init,
+        payer = signer,
+        space = 0,
+        seeds = [b"vault", vault_state.key().as_ref()],
         bump
     )]
     pub vault: SystemAccount<'info>,
@@ -60,7 +63,7 @@ pub struct Payment<'info> {
     pub vault_state: Account<'info, VaultState>,
     #[account(
         mut,
-        seeds = [b"vault", signer.key().as_ref()],
+        seeds = [b"vault", vault_state.key().as_ref()],
         bump = vault_state.vault_bump
     )]
     pub vault: SystemAccount<'info>,
@@ -80,7 +83,7 @@ pub struct Close<'info> {
     pub vault_state: Account<'info, VaultState>,
     #[account(
         mut,
-        seeds = [b"vault", signer.key().as_ref()],
+        seeds = [b"vault", vault_state.key().as_ref()],
         bump = vault_state.vault_bump
     )]
     pub vault: SystemAccount<'info>,
@@ -118,10 +121,10 @@ impl<'info> Payment<'info> {
     }
 
     pub fn withdraw(&mut self, amount: u64) -> Result<()> {
-        let signer_key = self.signer.to_account_info().key();
+        let vault_state_key = self.vault_state.to_account_info().key();
         let seeds = &[
             b"vault".as_ref(),
-            signer_key.as_ref(),
+            vault_state_key.as_ref(),
             &[self.vault_state.vault_bump],
         ];
         let signer_seeds = &[&seeds[..]];
@@ -139,10 +142,10 @@ impl<'info> Payment<'info> {
 impl<'info> Close<'info> {
     pub fn close(&mut self) -> Result<()> {
         // Transfer remaining lamports from vault to signer
-        let signer_key = self.signer.to_account_info().key();
+        let vault_state_key = self.vault_state.to_account_info().key();
         let vault_seeds = &[
             b"vault".as_ref(),
-            signer_key.as_ref(),
+            vault_state_key.as_ref(),
             &[self.vault_state.vault_bump],
         ];
         let signer_seeds = &[&vault_seeds[..]];
