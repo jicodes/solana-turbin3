@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
-use anchor_spl::token_interface::(Mint, TokenIntenface);
+use anchor_spl::token_interface::{Mint, TokenInterface};
 
-use crate::state::marketplace::Marketplace;
+use crate::state::Marketplace;
 
 #[derive(Accounts)]
 #[instruction(name: String)]
