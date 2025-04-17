@@ -4,7 +4,7 @@ use anchor_lang::{
 };
 use anchor_spl::{
     associated_token::AssociatedToken,
-    token::{transfer_checked, TransferChecked},
+    token::{close_account, transfer_checked, CloseAccount, TransferChecked},
     token_interface::{Mint, TokenAccount, TokenInterface},
 };
 
@@ -100,5 +100,43 @@ impl Purchase<'_> {
         let fee_ctx = CpiContext::new(self.system_program.to_account_info(), fee_accounts);
 
         transfer(fee_ctx, marketplace_fee)
+    }
+
+    pub fn send_nft(&mut self) -> Result<()> {
+        let seeds: &[&[u8]; 3] = &[
+            &self.marketplace.key().to_bytes()[..],
+            &self.maker_mint.key().to_bytes()[..],
+            &[self.listing.bump],
+        ];
+
+        let signer_seeds: &[&[&[u8]]; 1] = &[&seeds[..]];
+        let cpi_program = self.token_program.to_account_info();
+        let cpi_accounts = TransferChecked {
+            from: self.vault.to_account_info(),
+            mint: self.maker_mint.to_account_info(),
+            to: self.taker_ata.to_account_info(),
+            authority: self.listing.to_account_info(),
+        };
+        let cpi_ctx = CpiContext::new(cpi_program, cpi_accounts).with_signer(signer_seeds);
+        transfer_checked(cpi_ctx, 1, self.maker_mint.decimals)
+    }
+    pub fn close_mint_vault(&mut self) -> Result<()> {
+        let seeds: &[&[u8]; 3] = &[
+            &self.marketplace.key().to_bytes(),
+            &self.maker_mint.key().to_bytes(),
+            &[self.listing.bump],
+        ];
+
+        let signer_seeds: &[&[&[u8]]; 1] = &[&seeds[..]];
+
+        let cpi_program = self.token_program.to_account_info();
+        let close_accounts = CloseAccount {
+            account: self.vault.to_account_info(),
+            destination: self.maker.to_account_info(),
+            authority: self.listing.to_account_info(),
+        };
+        let cpi_ctx = CpiContext::new(cpi_program, close_accounts).with_signer(signer_seeds);
+
+        close_account(cpi_ctx)
     }
 }
