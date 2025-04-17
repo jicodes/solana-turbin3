@@ -66,8 +66,6 @@ pub struct Purchase<'info> {
     )]
     pub treasury: SystemAccount<'info>,
 
-    pub collection_mint: InterfaceAccount<'info, Mint>,
-
     pub associated_token_program: Program<'info, AssociatedToken>, // for creating associated token accounts
     pub system_program: Program<'info, System>,                    // for creating accounts
     pub token_program: Interface<'info, TokenInterface>,           // for token operations
