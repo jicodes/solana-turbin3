@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use anchor_spl::token::{Mint, Token};
 
-use crate::StakeConfig;
+use crate::state::StakeConfig;
 
 #[derive(Accounts)]
 pub struct InitializeConfig<'info> {
