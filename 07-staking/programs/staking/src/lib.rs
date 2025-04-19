@@ -15,7 +15,20 @@ declare_id!("6Sb47R5Mrq4CSRfbdtEQJdQ5zDnqACNuK9nkopA6jPV3");
 pub mod staking {
     use super::*;
 
-    pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
-        initialize::handler(ctx)
+    pub fn initialize_config(
+        ctx: Context<InitializeConfig>,
+        points_per_stake: u8,
+        max_stake: u8,
+        freeze_period: u32,
+    ) -> Result<()> {
+        ctx.accounts.initialize_config(points_per_stake, max_stake, freeze_period)
+    }
+
+    pub fn initialize_user(ctx: Context<InitializeUser>) -> Result<()> {
+        ctx.accounts.initialize_user(&ctx.bumps)
+    }
+
+    pub fn stake(ctx: Context<Stake>) -> Result<()> {
+        ctx.accounts.stake(&ctx.bumps)
     }
 }
