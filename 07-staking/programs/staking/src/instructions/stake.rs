@@ -114,8 +114,8 @@ impl Stake<'_> {
 
         let seeds = &[
             b"stake",
-            self.config.key().as_ref(),
-            self.mint.key().as_ref(),
+            self.config.to_account_info().key.as_ref(),
+            self.mint.to_account_info().key.as_ref(),
             &[self.stake_account.bump],
         ];
         let signer_seeds = &[&seeds[..]];
@@ -123,7 +123,7 @@ impl Stake<'_> {
         let metadata_program = &&self.metadata_program.to_account_info();
 
         FreezeDelegatedAccountCpi::new(metadata_program, freeze_cpi_accounts)
-            .invoke_signed(signers_seeds)?;
+            .invoke_signed(signer_seeds)?;
 
         self.stake_account.set_inner(StakeAccount {
             owner: self.user.key(),
