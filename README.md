@@ -1,1 +1,1 @@
-# solana-turbin3
+# Repo for Turbin3 Solana builder cohort
