@@ -1,0 +1,30 @@
+{
+  "name": "solana-arb-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jicodes/solana-arb-bot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/jicodes/solana-arb-bot/issues"
+  },
+  "homepage": "https://github.com/jicodes/solana-arb-bot#readme",
+  "dependencies": {
+    "@coral-xyz/anchor": "^0.31.1",
+    "@solana-developers/helpers": "^2.8.1",
+    "@solana/spl-token": "^0.4.13",
+    "@solana/web3.js": "^1.98.1",
+    "@types/node": "^22.14.1",
+    "axios": "^1.8.4",
+    "typescript": "^5.8.3"
+  }
+}
